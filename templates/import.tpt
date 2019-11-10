@@ -1,0 +1,12 @@
+#import with delimeter
+USING CHARACTER SET @var_utf
+DEFINE JOB tpt_load_template
+(
+  STEP DELETE_DATA_FROM_TABLE(
+  APPLY('DELETE FROM ' || @var_tablename ) TO OPERATOR ($DDL() ATTR (TdpId=@var_tdpid, UserName=@var_userid, UserPassword=@var_password));
+  );
+  STEP LOAD_DATA_INTO_TABLE (
+  APPLY $INSERT TO OPERATOR ($LOAD() ATTR (TdpId=@var_tdpid, UserName=@var_userid, UserPassword=@var_password, TargetTable=@var_tablename, MaxSessions=@var_maxsessions, DateForm = @var_dateform))
+  SELECT * FROM OPERATOR($FILE_READER(DELIMITED @var_tablename) ATTR (DirectoryPath = @var_directorypath,FileName=@var_inputfile, Format=@var_format, TextDelimiter=@var_delimiter_value, OpenMode = 'Read'));
+  );
+);

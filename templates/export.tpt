@@ -1,0 +1,7 @@
+#export with delimeter
+USING CHARACTER SET @var_utf
+DEFINE JOB tpt_export_template
+(
+  APPLY TO OPERATOR ($FILE_WRITER() ATTR (FileName=@var_outfile, Format=@var_format, TextDelimiter=@var_delimiter_value,  DirectoryPath=@var_directorypath))
+  SELECT * FROM OPERATOR($EXPORT() ATTR (TdpId=@var_tdpid, UserName=@var_userid, UserPassword=@var_password, SelectStmt=@var_exportquery, MaxSessions=@var_maxsessions, DateForm = @var_dateform, MaxDecimalDigits = 38));
+);
