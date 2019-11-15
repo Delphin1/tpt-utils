@@ -1,4 +1,3 @@
-#import with delimeter
 USING CHARACTER SET @var_utf
 DEFINE JOB tpt_load_template
 (
